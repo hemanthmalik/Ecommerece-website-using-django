@@ -1,0 +1,7 @@
+{% extends "market/common.html" %}
+{% block "title" %} Search Results {% endblock %}
+{% block "bodycontent"%}
+{% for i in search%}
+<h1>{{i.product_name}}</h1>
+{% endfor %}
+{% endblock %}

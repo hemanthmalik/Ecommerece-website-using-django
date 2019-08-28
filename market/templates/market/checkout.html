@@ -1,0 +1,99 @@
+{% extends "market/common.html" %}
+{% load static %}
+{% block "title" %} checkout page {% endblock %}
+{% block "bodycontent" %}
+<script>
+    var csrf = '{{csrf_token}}'
+</script>
+<div class="container">
+    <h3 class='py-3'>Items in your cart -</h3>
+    <ul class="list-group" id='checkoutItems'>
+    </ul>
+    {% for i in cartData %}
+    <div class="list-group my-3">
+  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">{{i.product_name}}</h5>
+      <small>3 days ago</small>
+    </div>
+  </a>
+  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">List group item heading</h5>
+      <small class="text-muted">3 days ago</small>
+    </div>
+    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+    <small class="text-muted">Donec id elit non mi porta.</small>
+  </a>
+</div>
+    {% endfor %}
+</div>
+<div class="container my-5">
+{{saved}}
+    <form action="/market/checkout/" method="post">
+        {% csrf_token %}
+        <legend>Enter Your details</legend>
+        <input type="hidden" name="itemsJson" value="" id = "itemsJson"/>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputEmail4">Email</label>
+            <input type="email" class="form-control" id="inputEmail4" name="email" placeholder="Email">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inputAddress1">Address 1</label>
+          <input type="text" class="form-control" id="inputAddress1" name="address1" placeholder="1234 Main St">
+        </div>
+        <div class="form-group">
+          <label for="inputAddress2">Address 2</label>
+          <input type="text" class="form-control" id="inputAddress2" name="address2" placeholder="Apartment, studio, or floor">
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="city">City</label>
+            <input type="text" class="form-control" id="city" name="city" name="city">
+          </div>
+          <div class="form-group col-md-4">
+            <label for="state">State</label>
+            <select id="state" class="form-control" name="state">
+              <option value="shitstate" selected>State</option>
+              <option value="shitstate2">shitState</option>
+            </select>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="zip_code">Zip</label>
+            <input type="text" class="form-control" id="zip_code" name="zip_code">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="gridCheck">
+            <label class="form-check-label" for="gridCheck">
+              I agree to the T&C
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Place Order</button>
+      </form>
+</div>
+{% endblock %}
+{% block "scriptblock" %}
+<script src='{% static "market/cartscript.js" %}'></script>
+<script src='{% static "market/checkoutscript.js" %}'></script>
+{% if saved %}
+<script>
+    if (totalCart){
+        alert("Thank you for shopping with us.");
+        localStorage.clear();
+        window.location = "/market/tracker";
+    }
+    else{
+        alert("Your Cart is Empty.")
+    }
+</script>
+{% endif %}
+{% endblock %}
